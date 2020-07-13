@@ -1,0 +1,82 @@
+INTERGRATING DJANGO FOR CREATING API
+1.Setup your development environment
+First we check the version of python installed in ur local machine, and after installing python, you can go ahead and create a working directory for your API and then setup a virtual environment. we can create a virtual enviroment named venv and activate the virtual enviroment named venv
+then to build an API you will need to first install django in the virtual environment you created earlier using pip install django
+After installing django, go ahead and install djangorestframework in the virtual environment you created earlier using pip install djangorestframework
+2.Project setup
+After setting up your development environment, go ahead and create a django project;
+(venv)music_service$ django-admin.py startproject api .
+(venv)music_service$ cd api
+Then create a django app;
+(venv)music_service$ django-admin.py startapp music
+At this point, the directory structure should now look like this;
+api/
+    manage.py
+    api/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+    music/
+        migrations/
+            __init__.py
+        __init__.py
+        admin.py
+        apps.py
+        models.py
+        tests.py
+        views.py
+    venv/
+now we need to sync your database and create an initial user and set a password for that user.
+(venv)music_service$ python manage.py migrate
+(venv)music_service$ python manage.py createsuperuser --email admin@example.com --username admin
+Now, open the api/settings.py file and add the rest_framework and music apps to INSTALLED_APPS .
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'music'
+ ]
+Furthermore, open the api/urls.py file and add urls for the  app;
+sample:
+from django.contrib import admin
+from django.urls import path, include
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('music.urls'))
+]
+With that the project  is setup and ready to code the  service api.
+
+INTEGRATING DATABASE WITH DJANGO
+Step 1 
+using install mysql-server we can install mysql
+Step 2 — Create the Initial Django Project Skeleton
+we need to generate the project skeleton using the django-admin command. This generated project will be the foundation of our  app.then we navigate to the directory where we wud build our x app. Within that directory, we’ll create a specific directory to build the app. Call the directory something meaningful for the app you are building. As an example, we’ll call ours my_blog_app"-mkdir my_blog_app".then navigate to the newly created directory using "cd my_blog_app".
+Next, move into the programming environment you would like to use for working in Django. You can use an existing one, or create a new one. We’ll call ours env, but you should use a name that is meaningful to you. Once it’s created you can activate it.
+
+python3 -m venv env
+. env/bin/activate
+Now install Django into this environment if you have not done so already.While in the my_blog_app directory, we will generate a project by running the following command:
+django-admin startproject blog
+Verify that it worked by navigating to the blog/ directory:cd blog
+The blog/ directory should have been created in the current directory, ~/my_blog_app/, after running the previous django-admin command.Run ls to verify that the necessary items were created. There should be a blog directory and a manage.py file: with an output.
+Now we have created a project directory containing the initial start of your app.
+Step 3 — 
+Edit settings if neccesary.
+tep 4 — Install MySQL Database Connector
+In order to use MySQL with our project, we will need a Python 3 database connector library compatible with Django. So, we will install the database connector, mysqlclient.Install the necessary Python and MySQL development headers and libraries:
+sudo apt install python3-dev libmysqlclient-dev default-libmysqlclient-dev
+Press y and ENTER to accept the installation.
+Once the installation is complete, we will use pip3 to install the mysqlclient library from PyPi. 
+pip install mysqlclient
+We have now successfully installed the MySQL client using the PyPi mysqlclient connector library.
+Step 5 — Create the Database
+ Once the skeleton of your Django application has been set up and mysqlclient and mysql-server have been installed, we will to need to configure your Django backend for MySQL compatibility.
+Log in via the MySQL root :"mysql -u root"
+We’ll know we are in the MySQL server when our prompt changes:mysql>.Then inspect the current databases with the following command:SHOW DATABASES;
+By default, you will have 4 databases already created, information_schema, MySQL, performance_schema and sys.
+To create a database in MySQL run the following command, using a meaningful name for your database:mysql>CREATE DATABASE blog_data;
+we are going to create a separate MySQL user account that we will use exclusively to operate our new database. Creating specific databases and accounts can support us from a management and security standpoint. We are going to create this account, set a password, and grant access to the database we created.
+CREATE USER 'djangouser'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+Step 6 — Add the MySQL Database Connection to your Application
+finally, we will be adding the database connection credentials to your Django application.
+We need to verify that the configurations in Django detect your MySQL server properly. We can do this by running the server to view your web application and to verify that it is working
